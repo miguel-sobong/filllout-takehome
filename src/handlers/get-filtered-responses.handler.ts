@@ -27,9 +27,10 @@ const GET_FILTERED_RESPONSE_HANDLER_REQUEST_SCHEMA = Joi.object<IRequestInterfac
   includeEditLink: Joi.boolean(),
 }).options(joiDefaultOptions);
 
-export const getFilteredResponsesHandler: RequestHandler<any, IGetAllSubmissionsResponse, any, any> = async (req, res) => {
+export const getFilteredResponsesHandler: RequestHandler<any, IGetAllSubmissionsResponse | string, any, any> = async (req, res) => {
   const { error, value } = GET_FILTERED_RESPONSE_HANDLER_REQUEST_SCHEMA.validate({ ...req.body, formId: req.params.formId });
   if (error) {
+    res.status(400).send(error.message);
     throw error;
   }
 
